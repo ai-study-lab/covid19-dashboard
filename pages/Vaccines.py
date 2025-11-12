@@ -1,8 +1,5 @@
 import streamlit as st
-import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 # 화면 세팅
 st.set_page_config(page_title="백신 접종 현황",
@@ -13,7 +10,12 @@ st.header('백신 접종 현황')
 df = pd.read_csv("data/COV_VAC_2021_2023_latlon.csv")
 df["map_circle_size"] = df["총 1차 접종자 수"]/300
 
-color_map = {"AFRICA":"#ED1C2480", "ASIA":"#EDDB1680", "EUROPE":"#1518ED80", "NORTH_AMERICA":"#ED8EE280", "OCEANIA":"#8AEDB580", "SOUTH_AMERICA":"#aaff0080"}
+color_map = {"AFRICA":"#ED1C2480", 
+             "ASIA":"#EDDB1680", 
+             "EUROPE":"#1518ED80", 
+             "NORTH_AMERICA":"#ED8EE280", 
+             "OCEANIA":"#8AEDB580", 
+             "SOUTH_AMERICA":"#aaff0080"}
 df["color"] = df["AREA"].replace(color_map)
 
 # 지역별 접종 현황
