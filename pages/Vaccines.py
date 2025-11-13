@@ -1,4 +1,5 @@
 import streamlit as st
+import pydeck as pdk
 import pandas as pd
 
 # 화면 세팅
@@ -12,20 +13,39 @@ df = pd.read_csv("data/WHO-COVID-19-global-data-latlon.csv")
 # 위도 값이 0인 데이타는 제외함
 df = df[df["latitude"] != 0]
 
-# 원 크기 세팅
-df["map_circle_size"] = df["New_cases"]/20  # 대충 20으로 나눴을 때 크기가 적당히 나오는것 같당
+df["map_circle_size"] = df["New_cases"]/50
 
-# 색깔 세팅
-color_map = {"AFRICA":"#ED1C2480", 
-             "ASIA":"#EDDB1680", 
-             "EUROPE":"#1518ED80", 
-             "NORTH_AMERICA":"#ED8EE280", 
-             "OCEANIA":"#8AEDB580", 
-             "SOUTH_AMERICA":"#aaff0080"}
-df["color"] = df["continent"].replace(color_map)
+color_map = {"AFRICA":[255, 253, 85], 
+             "ASIA":[224, 125, 255], 
+             "EUROPE":[89, 255, 88], 
+             "NORTH_AMERICA":[128, 123, 255], 
+             "OCEANIA":[255, 82, 69], 
+             "SOUTH_AMERICA":[54, 126, 127]}
+df["color"] = df["continent"].map(color_map)
 
-# 국가별로 groupby 처리
 df_groupby = df.groupby("Country_code").max()
 
-# 지도 그리기
-st.map(df_groupby, latitude="latitude", longitude="longitude", size="map_circle_size", color="color", zoom=1)
+# ScatterplotLayer 생성
+layer = pdk.Layer(
+    'ScatterplotLayer',
+    data=df_groupby,
+    get_position='[longitude, latitude]',
+    get_radius='map_circle_size',# 컬럼명으로 반지름 지정
+    get_fill_color='color',
+    pickable=True,
+    opacity=0.3,
+    radiusScale=2,               # radiusScale 값 조정
+    radiusMinPixels=5            # radiusMinPixels 값 조정
+)
+
+# 뷰 설정
+view_state = pdk.ViewState(latitude=35.9, longitude=14.1, zoom=1)
+
+# 렌더링
+r = pdk.Deck(
+        layers=[layer], 
+        map_style=None,
+        initial_view_state=view_state,
+        tooltip={"text": "{Country} : {New_cases}명"},
+    )
+st.pydeck_chart(r)
