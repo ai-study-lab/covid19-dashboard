@@ -43,9 +43,10 @@ view_state = pdk.ViewState(latitude=35.9, longitude=14.1, zoom=1)
 
 # 렌더링
 r = pdk.Deck(
-    layers=[layer], 
-    initial_view_state=view_state,
-    tooltip={"text": "{COUNTRY_NM} : {vaccinated_count}명"},
+        layers=[layer], 
+        map_style=None,
+        initial_view_state=view_state,
+        tooltip={"text": "{COUNTRY_NM} : {vaccinated_count}명"},
     )
 st.pydeck_chart(r)
 
