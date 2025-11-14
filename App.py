@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import pydeck as pdk
+import altair as alt
 
 st.set_page_config(layout="wide")
 st.title("코로나 대시보드")
