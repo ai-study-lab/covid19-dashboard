@@ -156,7 +156,7 @@ with tab2:
             data=latest_data,
             get_position='[경도, 위도]',
             get_color='[200, 30, 0, 160]',
-            get_radius='누적사망자 * 1 + 50', # (스케일 조절 필요)
+            get_radius='누적_사망자 * 1 + 50', # (스케일 조절 필요)
             pickable=True
         )
         tooltip = {
