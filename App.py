@@ -10,7 +10,6 @@ tab1, tab2, tab3 = st.tabs(
 )
 
 with tab1:
-    st.header("확진자 현황")
     # 데이터 로드 및 2021년 필터링 
     df = pd.read_csv("WHO-COVID-19-global-data-latlon.csv")
     df['Date_reported'] = pd.to_datetime(df['Date_reported'])
@@ -166,7 +165,7 @@ with tab2:
             "style": { "backgroundColor": "steelblue", "color": "white" }
         }
         st.pydeck_chart(pdk.Deck(
-            map_style='mapbox://styles/mapbox/light-v9',
+            map_style=None,
             initial_view_state=view_state,
             layers=[layer],
             tooltip=tooltip
